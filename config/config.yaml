@@ -1,0 +1,86 @@
+# SafeDriving 프로젝트 설정 파일
+
+# 데이터 경로
+data:
+  raw_data_path: "data/raw/"
+  processed_data_path: "data/processed/"
+  external_data_path: "data/external/"
+
+# 모델 설정
+models:
+  # XGBoost 설정
+  xgboost:
+    n_estimators: 1000
+    max_depth: 6
+    learning_rate: 0.1
+    subsample: 0.8
+    colsample_bytree: 0.8
+    random_state: 42
+
+  # LightGBM 설정
+  lightgbm:
+    n_estimators: 1000
+    max_depth: 6
+    learning_rate: 0.1
+    subsample: 0.8
+    colsample_bytree: 0.8
+    random_state: 42
+
+  # PyTorch MLP 설정
+  pytorch_mlp:
+    hidden_sizes: [512, 256, 128, 64]
+    dropout: 0.3
+    learning_rate: 0.001
+    batch_size: 256
+    epochs: 100
+    early_stopping_patience: 10
+
+# 피처 엔지니어링 설정
+feature_engineering:
+  # 급정지/급가속 임계값
+  harsh_braking_threshold: -3.0  # m/s²
+  harsh_acceleration_threshold: 3.0  # m/s²
+
+  # 속도 관련 임계값
+  speed_limit_urban: 60  # km/h
+  speed_limit_highway: 100  # km/h
+
+  # 시간 윈도우 설정
+  time_windows:
+    - 5   # 5초 윈도우
+    - 30  # 30초 윈도우
+    - 300 # 5분 윈도우
+
+# Optuna 최적화 설정
+optimization:
+  n_trials: 100
+  timeout: 3600  # 1시간
+  study_name: "safe_driving_optimization"
+
+# 평가 설정
+evaluation:
+  test_size: 0.2
+  validation_size: 0.2
+  cv_folds: 5
+  random_state: 42
+
+  # 평가 지표
+  metrics:
+    - "accuracy"
+    - "precision"
+    - "recall"
+    - "f1"
+    - "roc_auc"
+
+# 시각화 설정
+visualization:
+  figure_size: [12, 8]
+  dpi: 300
+  style: "seaborn-v0_8"
+  color_palette: "husl"
+
+# 로깅 설정
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file_path: "logs/safe_driving.log"
